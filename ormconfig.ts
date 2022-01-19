@@ -1,8 +1,9 @@
-import dotenv from 'dotenv';
+/* eslint-disable @typescript-eslint/no-var-requires */
+const dotenv = require('dotenv');
 
 dotenv.config();
 
-export default {
+module.exports = {
     type: 'postgres',
     url: process.env.DATABASE_URL,
     migrationsTableName: 'migrations',
