@@ -33,7 +33,7 @@ export default class Ticket extends BaseEntity {
     static async findTicket(ticket: TicketInfo) {
         const { userId } = ticket;
 
-        const createdTicket = this.find({ where: { userId } });
+        const createdTicket = await this.find({ where: { userId } });
 
         return createdTicket || null;
     }
