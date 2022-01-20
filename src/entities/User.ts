@@ -1,6 +1,18 @@
-import { BaseEntity, Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import {
+    BaseEntity,
+    Entity,
+    PrimaryGeneratedColumn,
+    Column,
+    ManyToMany,
+    JoinTable,
+    OneToOne,
+    JoinColumn,
+} from 'typeorm';
 import bcrypt from 'bcrypt';
 import EmailNotAvailableError from '@/errors/EmailNotAvailable';
+import Modality from './Modality';
+import Acommodation from './acommodation';
+import Ticket from './Ticket';
 
 @Entity('users')
 export default class User extends BaseEntity {
@@ -15,6 +27,38 @@ export default class User extends BaseEntity {
 
     @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
     createdAt: Date;
+
+    @OneToOne((type) => Ticket)
+    @JoinColumn({ name: 'user_id' })
+    ticket: Ticket;
+
+    // @ManyToMany((type) => Modality, (users) => User, { eager: true })
+    // @JoinTable({
+    //     name: 'users_tickets',
+    //     joinColumn: {
+    //         name: 'user_id',
+    //         referencedColumnName: 'id'
+    //     },
+    //     inverseJoinColumn: {
+    //         name: 'modality_id',
+    //         referencedColumnName: 'id'
+    //     }
+    // })
+    // modality: Modality
+
+    // @ManyToMany((type) => Acommodation, (users) => User, { eager: true })
+    // @JoinTable({
+    //     name: 'users_tickets',
+    //     joinColumn: {
+    //         name: 'user_id',
+    //         referencedColumnName: 'id'
+    //     },
+    //     inverseJoinColumn: {
+    //         name: 'acommodation_id',
+    //         referencedColumnName: 'id'
+    //     }
+    // })
+    // acommodation: Acommodation
 
     static async createNew(email: string, password: string) {
         await this.validateDuplicateEmail(email);
