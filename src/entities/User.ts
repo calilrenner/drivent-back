@@ -32,34 +32,6 @@ export default class User extends BaseEntity {
     @JoinColumn({ name: 'user_id' })
     ticket: Ticket;
 
-    // @ManyToMany((type) => Modality, (users) => User, { eager: true })
-    // @JoinTable({
-    //     name: 'users_tickets',
-    //     joinColumn: {
-    //         name: 'user_id',
-    //         referencedColumnName: 'id'
-    //     },
-    //     inverseJoinColumn: {
-    //         name: 'modality_id',
-    //         referencedColumnName: 'id'
-    //     }
-    // })
-    // modality: Modality
-
-    // @ManyToMany((type) => Acommodation, (users) => User, { eager: true })
-    // @JoinTable({
-    //     name: 'users_tickets',
-    //     joinColumn: {
-    //         name: 'user_id',
-    //         referencedColumnName: 'id'
-    //     },
-    //     inverseJoinColumn: {
-    //         name: 'acommodation_id',
-    //         referencedColumnName: 'id'
-    //     }
-    // })
-    // acommodation: Acommodation
-
     static async createNew(email: string, password: string) {
         await this.validateDuplicateEmail(email);
         const hashedPassword = this.hashPassword(password);
