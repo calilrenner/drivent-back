@@ -24,16 +24,26 @@ export default class Ticket extends BaseEntity {
     @Column()
     modalityId: number;
 
-    @ManyToOne(() => Acommodation, (acommodation) => acommodation.tickets)
+    @ManyToOne(() => Acommodation, (acommodation) => acommodation.tickets, {
+        eager: true,
+    })
     acommodation: Acommodation;
 
-    @ManyToOne(() => Modality, (modality) => modality.tickets)
+    @ManyToOne(() => Modality, (modality) => modality.tickets, { eager: true })
     modality: Modality;
 
-    static async findTicket(ticket: TicketInfo) {
-        const { userId } = ticket;
+    static async findTicket({
+        ticket,
+        id,
+    }: {
+        ticket?: TicketInfo;
+        id?: number;
+    }) {
+        const userId = ticket?.userId;
 
-        const createdTicket = await this.find({ where: { userId } });
+        const createdTicket = await this.find({
+            where: { userId: userId || id },
+        });
 
         return createdTicket || null;
     }
