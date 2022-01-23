@@ -16,8 +16,7 @@
     "migration:run": "npm run build && npm run typeorm migration:run",
     "eslint": "npx eslint src",
     "eslint:fix": "npx eslint --fix src",
-    "seed": "ts-node -r tsconfig-paths/register ./src/seeders",
-    "prepare": "husky install"
+    "seed": "ts-node -r tsconfig-paths/register ./src/seeders"
   },
   "keywords": [],
   "author": "",
