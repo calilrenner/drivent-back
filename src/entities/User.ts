@@ -3,15 +3,11 @@ import {
     Entity,
     PrimaryGeneratedColumn,
     Column,
-    ManyToMany,
-    JoinTable,
     OneToOne,
     JoinColumn,
 } from 'typeorm';
 import bcrypt from 'bcrypt';
 import EmailNotAvailableError from '@/errors/EmailNotAvailable';
-import Modality from './Modality';
-import Acommodation from './acommodation';
 import Ticket from './Ticket';
 
 @Entity('users')
