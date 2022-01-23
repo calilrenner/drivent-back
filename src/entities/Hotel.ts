@@ -1,3 +1,4 @@
+import { ReservationInfo } from '@/interfaces/reservation';
 import {
     Entity,
     PrimaryGeneratedColumn,
@@ -30,5 +31,28 @@ export default class Hotel extends BaseEntity {
     static async getHotels() {
         const hotels = await this.find();
         return hotels || null;
+    }
+
+    static async updateVacanciesNumber(reservationInfo: ReservationInfo) {
+        const hotel = await this.findOne({
+            where: { id: reservationInfo.hotelId },
+        });
+
+        if (
+            reservationInfo.newHotelId &&
+            reservationInfo.newHotelId !== reservationInfo.hotelId
+        ) {
+            hotel.vacancies++;
+
+            const newHotel = await this.findOne({
+                where: { id: reservationInfo.newHotelId },
+            });
+            newHotel.vacancies--;
+            newHotel.save();
+        } else if (!reservationInfo.newHotelId) {
+            hotel.vacancies--;
+        }
+
+        hotel.save();
     }
 }

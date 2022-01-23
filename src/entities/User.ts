@@ -12,6 +12,7 @@ import bcrypt from 'bcrypt';
 import EmailNotAvailableError from '@/errors/EmailNotAvailable';
 import Modality from './Modality';
 import Ticket from './Ticket';
+import VacancyUser from './VacancyUser';
 
 @Entity('users')
 export default class User extends BaseEntity {
