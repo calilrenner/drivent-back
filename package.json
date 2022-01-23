@@ -2,10 +2,6 @@
   "name": "typescript-back-template",
   "version": "1.0.0",
   "description": "",
-    "engines": {
-    "node": "14.17.6",
-    "npm": "8.0.0"
-  },
   "main": "index.js",
   "scripts": {
     "test": "NODE_ENV=test npm run eslint:fix && npx jest -i",
