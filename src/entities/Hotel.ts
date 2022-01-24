@@ -59,6 +59,7 @@ export default class Hotel extends BaseEntity {
     static async getHotelInfoByRoomId(roomId: number) {
         const hotels = await this.find();
         const hotelInfo = {
+            hotelId: 0,
             hotelName: '',
             hotelUrlImage: '',
         };
@@ -66,6 +67,7 @@ export default class Hotel extends BaseEntity {
         hotels.forEach((hotel) => {
             hotel.rooms.forEach((room) => {
                 if (room.id === roomId) {
+                    hotelInfo.hotelId = hotel.id;
                     hotelInfo.hotelName = hotel.name;
                     hotelInfo.hotelUrlImage = hotel.imageUrl;
                 }

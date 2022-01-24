@@ -23,6 +23,8 @@ export async function getReservation(userId: number) {
     const hotelInfo = await Hotels.getHotelInfoByRoomId(roomInfo.roomId);
 
     const reservationInfo = {
+        vacancyId: vacancyId,
+        hotelId: hotelInfo.hotelId,
         hotelUrlImage: hotelInfo.hotelUrlImage,
         hotelName: hotelInfo.hotelName,
         roomNumber: roomInfo.roomNumber,
