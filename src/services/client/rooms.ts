@@ -8,4 +8,5 @@ import NotFoundError from '@/errors/NotFoundError';
 export async function postVacancyReservation(reservation: ReservationInfo) {
     await VacancyUser.createOrUpdateVacancyUser(reservation);
     await Hotels.updateVacanciesNumber(reservation);
+    await Vacancies.updateVacanciesState(reservation);
 }

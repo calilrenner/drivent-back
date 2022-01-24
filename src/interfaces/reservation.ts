@@ -6,16 +6,4 @@ interface ReservationInfo {
     newVacancyId?: number;
 }
 
-interface ChangeReservationInfo {
-    userId: number;
-    old: {
-        hotelId: number;
-        vacancyId: number;
-    };
-    new: {
-        hotelId: number;
-        vacancyId: number;
-    };
-}
-
-export { ReservationInfo, ChangeReservationInfo };
+export { ReservationInfo };

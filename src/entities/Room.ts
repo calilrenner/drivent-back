@@ -27,4 +27,31 @@ export default class Room extends BaseEntity {
         const rooms = await this.find();
         return rooms || null;
     }
+
+    static async getRoomInfoByVacancyId(vacancyId: number) {
+        const rooms = await this.find();
+        const roomInfo = {
+            roomId: 0,
+            roomNumber: 0,
+            roomType: 0,
+            roomOcupation: 0,
+        };
+
+        rooms.forEach((room) => {
+            room.vacancies.forEach((vacancy) => {
+                if (vacancy.id === vacancyId) {
+                    roomInfo.roomId = room.id;
+                    roomInfo.roomNumber = room.number;
+                }
+            });
+        });
+
+        const room = await this.findOne({ where: { id: roomInfo.roomId } });
+        roomInfo.roomType = room.vacancies.length;
+        room.vacancies.forEach((vacancy) => {
+            if (vacancy.isAvailable === false) roomInfo.roomOcupation++;
+        });
+
+        return roomInfo;
+    }
 }

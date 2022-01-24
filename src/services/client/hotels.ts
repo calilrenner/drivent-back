@@ -1,6 +1,7 @@
 import Hotels from '@/entities/Hotel';
 import Rooms from '@/entities/Room';
 import Vacancies from '@/entities/Vacancy';
+import VacancyUser from '@/entities/VacancyUser';
 
 import NotFoundError from '@/errors/NotFoundError';
 
@@ -14,4 +15,20 @@ export async function getHotels() {
     }
 
     return hotels;
+}
+
+export async function getReservation(userId: number) {
+    const vacancyId = await VacancyUser.getVacancyId(userId);
+    const roomInfo = await Rooms.getRoomInfoByVacancyId(vacancyId);
+    const hotelInfo = await Hotels.getHotelInfoByRoomId(roomInfo.roomId);
+
+    const reservationInfo = {
+        hotelUrlImage: hotelInfo.hotelUrlImage,
+        hotelName: hotelInfo.hotelName,
+        roomNumber: roomInfo.roomNumber,
+        roomType: roomInfo.roomType,
+        roomOcupation: roomInfo.roomOcupation,
+    };
+
+    return reservationInfo;
 }

@@ -40,9 +40,6 @@ export default class VacancyUser extends BaseEntity {
             where: { user: { id: userId } },
         });
 
-        // eslint-disable-next-line no-console
-        console.log(reservation);
-
         if (reservation !== undefined) {
             reservation.vacancy.id = reservationInfo.newVacancyId;
         } else {
@@ -50,5 +47,14 @@ export default class VacancyUser extends BaseEntity {
         }
 
         await reservation.save();
+    }
+
+    static async getVacancyId(userId: number) {
+        const reservation = await this.findOne({
+            where: { user: { id: userId } },
+        });
+
+        const vacancyId = reservation.vacancy.id;
+        return vacancyId;
     }
 }

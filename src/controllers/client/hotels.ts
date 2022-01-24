@@ -9,3 +9,10 @@ export async function getHotels(req: Request, res: Response) {
     }
     return res.send({ message: 'Não há hotéis cadastrados' });
 }
+
+export async function getReservation(req: Request, res: Response) {
+    const userId = +req.params.id;
+
+    const reservationInfo = await hotelsService.getReservation(userId);
+    res.send(reservationInfo);
+}

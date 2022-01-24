@@ -55,4 +55,23 @@ export default class Hotel extends BaseEntity {
 
         hotel.save();
     }
+
+    static async getHotelInfoByRoomId(roomId: number) {
+        const hotels = await this.find();
+        const hotelInfo = {
+            hotelName: '',
+            hotelUrlImage: '',
+        };
+
+        hotels.forEach((hotel) => {
+            hotel.rooms.forEach((room) => {
+                if (room.id === roomId) {
+                    hotelInfo.hotelName = hotel.name;
+                    hotelInfo.hotelUrlImage = hotel.imageUrl;
+                }
+            });
+        });
+
+        return hotelInfo;
+    }
 }
