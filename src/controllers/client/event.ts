@@ -7,13 +7,6 @@ export async function get(req: Request, res: Response) {
     res.send(eventInfo);
 }
 
-export async function postUserEvent(req: Request, res: Response) {
-    const userEventInfo = req.body;
-
-    const newUserEvent = await service.postUserEvent(userEventInfo);
-    res.send(newUserEvent);
-}
-
 export async function getEventsByDayId(req: Request, res: Response) {
     const dayId = +req.params.id;
     const trails = await service.getEventsByDayId(dayId);
