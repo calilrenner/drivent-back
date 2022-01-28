@@ -6,5 +6,6 @@ const router = Router();
 
 router.get('/', controller.get);
 router.post('/schedule', controller.postUserEvent);
+router.get('/:id', controller.getEventsByDayId);
 
 export default router;
