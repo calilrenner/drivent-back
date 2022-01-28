@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import {
     BaseEntity,
     Column,
@@ -15,6 +16,11 @@ export default class Day extends BaseEntity {
     @Column()
     day: string;
 
-    @OneToMany(() => Event, (events) => events.day)
-    events: Event;
+    @OneToMany(() => Event, (events) => events.day, { eager: true })
+    events: Event[];
+
+    static async getEventsByDayId(dayId: number) {
+        const dayData = await this.find({ where: { id: dayId } });
+        return dayData[0];
+    }
 }

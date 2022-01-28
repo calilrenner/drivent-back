@@ -7,11 +7,15 @@ export async function get(req: Request, res: Response) {
     res.send(eventInfo);
 }
 
-export async function postUserEvent(req: Request, res: Response) {
-    const userEventInfo = req.body;
+export async function getEventsByDayId(req: Request, res: Response) {
+    const dayId = +req.params.id;
+    const trails = await service.getEventsByDayId(dayId);
+    res.send(trails);
+}
 
-    const newUserEvent = await service.postUserEvent(userEventInfo);
-    res.send(newUserEvent);
+export async function postUserEvent(req: Request, res: Response) {
+    const event = await service.postUserEvent(req.body);
+    res.send(event);
 }
 
 export async function updateUserEvent(req: Request, res: Response) {
