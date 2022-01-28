@@ -27,9 +27,9 @@ export default class UserEvent extends BaseEntity {
     event: Event;
 
     static async findUserEvent(userId: number) {
-        const event = await this.find({ where: { userId } });
+        const eventi = await this.find({ where: { userId } });
 
-        return event;
+        return eventi;
     }
 
     static async createUserEvent(userEvent: EventsByUser) {

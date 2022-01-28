@@ -21,10 +21,10 @@ export default class Event extends BaseEntity {
     @Column()
     trailId: number;
 
-    @Column()
+    @Column({ type: 'decimal', precision: 5, scale: 2, default: 0 })
     beginHour: number;
 
-    @Column()
+    @Column({ type: 'decimal', precision: 5, scale: 2, default: 0 })
     finalHour: number;
 
     @Column()
