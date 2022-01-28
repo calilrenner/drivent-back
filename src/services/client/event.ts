@@ -29,11 +29,16 @@ export async function postUserEvent(userEvent: EventsByUser) {
         ) {
             return 'Não foi dessa vez';
         }
+
+        if (
+            event.beginHour <= userEventsHours[i].begin &&
+            event.finalHour >= userEventsHours[i].final
+        ) {
+            return 'Não foi dessa vez';
+        }
     }
 
-    // console.log(userEvents, events);
+    const newEvent = await UserEvent.createUserEvent(userEvent);
 
-    // const newEvent = await UserEvent.createUserEvent(userEvent);
-
-    return userEvents;
+    return newEvent;
 }
