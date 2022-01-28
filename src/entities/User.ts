@@ -5,12 +5,12 @@ import {
     Column,
     OneToOne,
     JoinColumn,
+    OneToMany,
 } from 'typeorm';
 import bcrypt from 'bcrypt';
 import EmailNotAvailableError from '@/errors/EmailNotAvailable';
-import Modality from './Modality';
 import Ticket from './Ticket';
-import VacancyUser from './VacancyUser';
+import UserEvent from './UserEvent';
 
 @Entity('users')
 export default class User extends BaseEntity {
@@ -29,6 +29,9 @@ export default class User extends BaseEntity {
     @OneToOne((type) => Ticket)
     @JoinColumn({ name: 'user_id' })
     ticket: Ticket;
+
+    @OneToMany(() => UserEvent, (usersEvent) => usersEvent.user)
+    usersEvent: UserEvent;
 
     static async createNew(email: string, password: string) {
         await this.validateDuplicateEmail(email);
