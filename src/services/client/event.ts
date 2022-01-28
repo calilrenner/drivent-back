@@ -31,7 +31,7 @@ export async function postUserEvent(userEvent: EventsByUser) {
         }
     }
 
-    console.log(userEvents, events);
+    // console.log(userEvents, events);
 
     // const newEvent = await UserEvent.createUserEvent(userEvent);
 
