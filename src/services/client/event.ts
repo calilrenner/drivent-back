@@ -3,6 +3,7 @@ import Setting from '@/entities/Setting';
 import UserEvent from '@/entities/UserEvent';
 import ConflictError from '@/errors/ConflictError';
 import { EventsByUser } from '@/interfaces/event';
+import { getManager } from 'typeorm';
 
 export async function getEventInfo() {
     return await Setting.getEventSettings();
@@ -44,4 +45,15 @@ export async function postUserEvent(userEvent: EventsByUser) {
     const newEvent = await UserEvent.createUserEvent(userEvent);
 
     return newEvent;
+}
+
+export async function updateUserEvent(userEvent: EventsByUser) {
+    const { userId, eventId, newEventId } = userEvent;
+
+    const event = await getManager().query(
+        'UPDATE user_events SET "eventId" = $1 WHERE "userId" = $2 AND "eventId" = $3',
+        [newEventId, userId, eventId],
+    );
+
+    return event;
 }

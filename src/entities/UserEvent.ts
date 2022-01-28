@@ -38,4 +38,10 @@ export default class UserEvent extends BaseEntity {
 
         return newUserEvent;
     }
+
+    static async updateEvent(prevEvent: number, currEvent: number) {
+        const event = await this.findOne({ where: { eventId: prevEvent } });
+
+        return event;
+    }
 }

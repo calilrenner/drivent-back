@@ -13,3 +13,8 @@ export async function postUserEvent(req: Request, res: Response) {
     const newUserEvent = await service.postUserEvent(userEventInfo);
     res.send(newUserEvent);
 }
+
+export async function updateUserEvent(req: Request, res: Response) {
+    const updatedEvent = await service.updateUserEvent(req.body);
+    res.send(updatedEvent);
+}
