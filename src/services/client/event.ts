@@ -30,14 +30,14 @@ export async function postUserEvent(userEvent: EventsByUser) {
         ) {
             throw new ConflictError(`O seguinte evento está em conflito com o evento selecionado. Deseja trocar?
                 Evento conflitante: ${
-                    userEvents[i].event.name
-                } (${userEventsHours[i].begin
-                .toString()
-                .replace('.', 'h')
-                .replace('h5', 'h3')} - ${userEventsHours[i].final
-                .toString()
-                .replace('.', 'h')
-                .replace('h5', 'h3')})
+    userEvents[i].event.name
+} (${userEventsHours[i].begin
+    .toString()
+    .replace('.', 'h')
+    .replace('h5', 'h3')} - ${userEventsHours[i].final
+    .toString()
+    .replace('.', 'h')
+    .replace('h5', 'h3')})
             `);
         }
 
@@ -50,12 +50,12 @@ export async function postUserEvent(userEvent: EventsByUser) {
             Evento conflitante:
             - nome: ${userEvents[i].event.name};
             - Horário: ${userEventsHours[i].begin
-                .toString()
-                .replace('.', 'h')
-                .replace('h5', 'h3')} - ${userEventsHours[i].final
-                .toString()
-                .replace('.', 'h')
-                .replace('h5', 'h3')}
+        .toString()
+        .replace('.', 'h')
+        .replace('h5', 'h3')} - ${userEventsHours[i].final
+    .toString()
+    .replace('.', 'h')
+    .replace('h5', 'h3')}
         `);
         }
 
@@ -68,12 +68,12 @@ export async function postUserEvent(userEvent: EventsByUser) {
             Evento conflitante:
             - nome: ${userEvents[i].event.name};
             - Horário: ${userEventsHours[i].begin
-                .toString()
-                .replace('.', 'h')
-                .replace('h5', 'h3')} - ${userEventsHours[i].final
-                .toString()
-                .replace('.', 'h')
-                .replace('h5', 'h3')}
+        .toString()
+        .replace('.', 'h')
+        .replace('h5', 'h3')} - ${userEventsHours[i].final
+    .toString()
+    .replace('.', 'h')
+    .replace('h5', 'h3')}
         `);
         }
     }
