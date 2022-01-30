@@ -22,7 +22,7 @@ export default class Day extends BaseEntity {
     static async getEventsByDayId(dayId: number) {
         const dayData = (await this.find({ where: { id: dayId } }))[0];
         const orderedDayData = dayData.events.sort((a, b) =>
-            a.beginHour > b.beginHour ? 1 : -1,
+            +a.beginHour > +b.beginHour ? 1 : -1,
         );
         return orderedDayData;
     }
