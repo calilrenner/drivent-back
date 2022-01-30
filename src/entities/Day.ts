@@ -7,6 +7,7 @@ import {
     PrimaryGeneratedColumn,
 } from 'typeorm';
 import Event from './Event';
+import UserEvent from './UserEvent';
 
 @Entity('days')
 export default class Day extends BaseEntity {
@@ -20,7 +21,10 @@ export default class Day extends BaseEntity {
     events: Event[];
 
     static async getEventsByDayId(dayId: number) {
-        const dayData = await this.find({ where: { id: dayId } });
-        return dayData[0];
+        const dayData = (await this.find({ where: { id: dayId } }))[0];
+        const orderedDayData = dayData.events.sort((a, b) =>
+            a.beginHour > b.beginHour ? 1 : -1,
+        );
+        return orderedDayData;
     }
 }

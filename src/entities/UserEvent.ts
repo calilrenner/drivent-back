@@ -39,9 +39,19 @@ export default class UserEvent extends BaseEntity {
         return newUserEvent;
     }
 
-    static async updateEvent(prevEvent: number, currEvent: number) {
-        const event = await this.findOne({ where: { eventId: prevEvent } });
+    // static async updateEvent(prevEvent: number, currEvent: number) {
+    //     const event = await this.findOne({ where: { eventId: prevEvent } });
 
-        return event;
+    //     return event;
+    // }
+
+    static async updateEvent(userId: number, eventId: number) {
+        const deleteEvent = await this.delete({ userId, eventId });
+    }
+
+    static async findEventsByUserId(userId: number) {
+        const events = await this.find({ where: { userId } });
+
+        return events;
     }
 }

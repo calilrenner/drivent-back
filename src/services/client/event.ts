@@ -15,33 +15,66 @@ export async function getEventInfo() {
 export async function postUserEvent(userEvent: EventsByUser) {
     const { userId, eventId } = userEvent;
     const event = await Event.findEvent(eventId);
-    const userEventsHours = (await UserEvent.findUserEvent(userId))
-        .filter((ev) => ev.event.dayId === event.dayId)
-        .map((ev) => ({
-            begin: ev.event.beginHour,
-            final: ev.event.finalHour,
-        }));
+    const userEvents = (await UserEvent.findUserEvent(userId)).filter(
+        (ev) => ev.event.dayId === event.dayId,
+    );
+    const userEventsHours = userEvents.map((ev) => ({
+        begin: ev.event.beginHour,
+        final: ev.event.finalHour,
+    }));
 
     for (let i = 0; i < userEventsHours.length; i++) {
         if (
             +event.beginHour >= +userEventsHours[i].begin &&
             +event.beginHour < +userEventsHours[i].final
         ) {
-            throw new ConflictError('Horário conflitante');
+            throw new ConflictError(`O seguinte evento está em conflito com o evento selecionado. Deseja trocar?
+                Evento conflitante: ${
+                    userEvents[i].event.name
+                } (${userEventsHours[i].begin
+                .toString()
+                .replace('.', 'h')
+                .replace('h5', 'h3')} - ${userEventsHours[i].final
+                .toString()
+                .replace('.', 'h')
+                .replace('h5', 'h3')})
+            `);
         }
 
         if (
             +event.finalHour >= +userEventsHours[i].begin &&
             +event.finalHour < +userEventsHours[i].final
         ) {
-            throw new ConflictError('Horário conflitante');
+            throw new ConflictError(`O seguinte evento está em conflito com o evento selecionado. Deseja trocar?
+
+            Evento conflitante:
+            - nome: ${userEvents[i].event.name};
+            - Horário: ${userEventsHours[i].begin
+                .toString()
+                .replace('.', 'h')
+                .replace('h5', 'h3')} - ${userEventsHours[i].final
+                .toString()
+                .replace('.', 'h')
+                .replace('h5', 'h3')}
+        `);
         }
 
         if (
             +event.beginHour <= +userEventsHours[i].begin &&
             +event.finalHour >= +userEventsHours[i].final
         ) {
-            throw new ConflictError('Horário conflitante');
+            throw new ConflictError(`O seguinte evento está em conflito com o evento selecionado. Deseja trocar?
+
+            Evento conflitante:
+            - nome: ${userEvents[i].event.name};
+            - Horário: ${userEventsHours[i].begin
+                .toString()
+                .replace('.', 'h')
+                .replace('h5', 'h3')} - ${userEventsHours[i].final
+                .toString()
+                .replace('.', 'h')
+                .replace('h5', 'h3')}
+        `);
         }
     }
 
@@ -50,24 +83,40 @@ export async function postUserEvent(userEvent: EventsByUser) {
     return newEvent;
 }
 
+// export async function updateUserEvent(userEvent: EventsByUser) {
+//     const { userId, eventId, newEventId } = userEvent;
+
+//     const event = await getManager().query(
+//         'UPDATE user_events SET "eventId" = $1 WHERE "userId" = $2 AND "eventId" = $3',
+//         [newEventId, userId, eventId],
+//     );
+
+//     return event;
+// }
+
 export async function updateUserEvent(userEvent: EventsByUser) {
-    const { userId, eventId, newEventId } = userEvent;
+    const { userId, eventId } = userEvent;
+    const deleteEvent = await UserEvent.updateEvent(userId, eventId);
 
-    const event = await getManager().query(
-        'UPDATE user_events SET "eventId" = $1 WHERE "userId" = $2 AND "eventId" = $3',
-        [newEventId, userId, eventId],
-    );
-
-    return event;
+    return deleteEvent;
 }
-export async function getEventsByDayId(dayId: number) {
+
+export async function getEventsByDayId(dayId: number, userId: number) {
     const dayData = await Day.getEventsByDayId(dayId);
+
+    const userEvents = (await UserEvent.find()).map((ue) => ue.eventId);
+    const userEventsAmount = (eventId: number) => {
+        return userEvents.filter((ev) => ev === eventId).length;
+    };
+    const HandleHighlightedEvents = (
+        await UserEvent.findEventsByUserId(userId)
+    ).map((ev) => ev.event.id);
 
     const firstTrailEvents: FormattedEvent[] = [];
     const secondTrailEvents: FormattedEvent[] = [];
     const thirdTrailEvents: FormattedEvent[] = [];
 
-    dayData.events.forEach((ev: Event) => {
+    dayData.forEach(async (ev: Event) => {
         let beginTimeString = '';
         if (ev.beginHour < 10) beginTimeString += '0';
         beginTimeString += `${ev.beginHour}:`;
@@ -87,7 +136,8 @@ export async function getEventsByDayId(dayId: number) {
             startTime: beginTimeString,
             endTime: endTimeString,
             duration: ev.finalHour - ev.beginHour,
-            vacancies: ev.vacancies,
+            vacancies: ev.vacancies - userEventsAmount(ev.id),
+            reservedByThisUser: HandleHighlightedEvents.includes(ev.id) && true,
         };
         if (ev.trailId === 1) firstTrailEvents.push(formattedEvent);
         if (ev.trailId === 2) secondTrailEvents.push(formattedEvent);
