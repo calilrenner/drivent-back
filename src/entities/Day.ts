@@ -7,7 +7,6 @@ import {
     PrimaryGeneratedColumn,
 } from 'typeorm';
 import Event from './Event';
-import UserEvent from './UserEvent';
 
 @Entity('days')
 export default class Day extends BaseEntity {
