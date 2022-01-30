@@ -13,4 +13,6 @@ router.post(
     controller.signUp,
 );
 
+router.post('/sign-out', controller.signOut);
+
 export default router;

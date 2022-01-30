@@ -16,4 +16,13 @@ export default class Session extends BaseEntity {
         await session.save();
         return session;
     }
+
+    static async removeSession(userId: number) {
+        const session = this.createQueryBuilder()
+            .delete()
+            .from(this)
+            .where('userId = :userId', { userId })
+            .execute();
+        return session;
+    }
 }
