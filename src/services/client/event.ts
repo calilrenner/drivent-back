@@ -45,13 +45,12 @@ export async function postUserEvent(userEvent: EventsByUser) {
             +event.finalHour < +userEventsHours[i].final
         ) {
             throw new ConflictError(`O seguinte evento está em conflito com o evento selecionado.
-
-            Evento:
-            - nome: ${userEvents[i].event.name};
-            - Horário: ${userEventsHours[i].begin
-        .toString()
-        .replace('.', 'h')
-        .replace('h5', 'h3')} - ${userEventsHours[i].final
+                Evento : ${
+    userEvents[i].event.name
+} (${userEventsHours[i].begin
+    .toString()
+    .replace('.', 'h')
+    .replace('h5', 'h3')} - ${userEventsHours[i].final
     .toString()
     .replace('.', 'h')
     .replace('h5', 'h3')}
@@ -63,13 +62,12 @@ export async function postUserEvent(userEvent: EventsByUser) {
             +event.finalHour >= +userEventsHours[i].final
         ) {
             throw new ConflictError(`O seguinte evento está em conflito com o evento selecionado.
-
-            Evento conflitante:
-            - nome: ${userEvents[i].event.name};
-            - Horário: ${userEventsHours[i].begin
-        .toString()
-        .replace('.', 'h')
-        .replace('h5', 'h3')} - ${userEventsHours[i].final
+            Evento : ${
+    userEvents[i].event.name
+} (${userEventsHours[i].begin
+    .toString()
+    .replace('.', 'h')
+    .replace('h5', 'h3')} - ${userEventsHours[i].final
     .toString()
     .replace('.', 'h')
     .replace('h5', 'h3')}
@@ -107,11 +105,11 @@ export async function getEventsByDayId(dayId: number, userId: number) {
     dayData.forEach(async (ev: Event) => {
         let beginTimeString = '';
         if (ev.beginHour < 10) beginTimeString += '0';
-        beginTimeString += `${ev.beginHour}`.replace('.5', ':3');
+        beginTimeString += `${ev.beginHour}`.replace('.5', ':3').replace('.0', ':0');
 
         let endTimeString = '';
         if (ev.finalHour < 10) endTimeString += '0';
-        endTimeString += `${ev.finalHour}`.replace('.5', ':3');
+        endTimeString += `${ev.finalHour}`.replace('.5', ':3').replace('.0', ':0');
 
         const formattedEvent = {
             id: ev.id,
