@@ -27,9 +27,9 @@ export default class UserEvent extends BaseEntity {
     event: Event;
 
     static async findUserEvent(userId: number) {
-        const event = await this.find({ where: { userId } });
+        const eventi = await this.find({ where: { userId } });
 
-        return event;
+        return eventi;
     }
 
     static async createUserEvent(userEvent: EventsByUser) {
@@ -37,5 +37,15 @@ export default class UserEvent extends BaseEntity {
         await newUserEvent.save();
 
         return newUserEvent;
+    }
+
+    static async updateEvent(userId: number, eventId: number) {
+        const deleteEvent = await this.delete({ userId, eventId });
+    }
+
+    static async findEventsByUserId(userId: number) {
+        const events = await this.find({ where: { userId } });
+
+        return events;
     }
 }
