@@ -41,7 +41,7 @@ export async function postUserEvent(userEvent: EventsByUser) {
         }
 
         if (
-            +event.finalHour >= +userEventsHours[i].begin &&
+            +event.finalHour > +userEventsHours[i].begin &&
             +event.finalHour < +userEventsHours[i].final
         ) {
             throw new ConflictError(`O seguinte evento está em conflito com o evento selecionado.
