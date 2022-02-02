@@ -97,6 +97,8 @@ export async function updateUserEvent(userEvent: EventsByUser) {
 
 export async function getEventsByDayId(dayId: number, userId: number) {
     const dayData = await Day.getEventsByDayId(dayId);
+    const dayName = await Day.getDayName(dayId);
+    const [eventDay, eventMonth] = dayName.split('/');
 
     const userEvents = (await UserEvent.find()).map((ue) => ue.eventId);
     const userEventsAmount = (eventId: number) => {
@@ -110,6 +112,9 @@ export async function getEventsByDayId(dayId: number, userId: number) {
     const secondTrailEvents: FormattedEvent[] = [];
     const thirdTrailEvents: FormattedEvent[] = [];
 
+    const [thisDay, thisMonth] = new Date().toLocaleDateString('pt-br', { month: 'numeric', day: 'numeric' }).split('/');
+    const time = Number(new Date().toLocaleDateString('pt-br', { timeStyle: 'short' }).replace(':', '.'));
+
     dayData.forEach(async (ev: Event) => {
         let beginTimeString = '';
         if (ev.beginHour < 10) beginTimeString += '0';
@@ -119,6 +124,9 @@ export async function getEventsByDayId(dayId: number, userId: number) {
         if (ev.finalHour < 10) endTimeString += '0';
         endTimeString += `${ev.finalHour}`.replace('.5', ':3').replace('.0', ':0');
 
+        let closed = false;
+        if(ev.beginHour - time <= 5 && +eventDay === +thisDay && +eventMonth === +thisMonth) closed = true; 
+
         const formattedEvent = {
             id: ev.id,
             name: ev.name,
@@ -126,6 +134,7 @@ export async function getEventsByDayId(dayId: number, userId: number) {
             endTime: endTimeString,
             duration: ev.finalHour - ev.beginHour,
             vacancies: ev.vacancies - userEventsAmount(ev.id),
+            closed,
             reservedByThisUser: HandleHighlightedEvents.includes(ev.id) && true,
         };
         if (ev.trailId === 1) firstTrailEvents.push(formattedEvent);
