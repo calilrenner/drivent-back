@@ -14,7 +14,7 @@ export async function getEventInfo() {
 export async function postUserEvent(userEvent: EventsByUser) {
     const { userId, eventId } = userEvent;
     const event = await Event.findEvent(eventId);
-    const userEvents = (await UserEvent.findUserEvent(userId)).filter(
+    const userEvents = (await UserEvent.findEventsByUserId(userId)).filter(
         (ev) => ev.event.dayId === event.dayId,
     );
     const userEventsHours = userEvents.map((ev) => ({
@@ -22,6 +22,14 @@ export async function postUserEvent(userEvent: EventsByUser) {
         final: ev.event.finalHour,
     }));
 
+    const eventReservedVancanciesAmount = await UserEvent.findEventsByEventId(eventId);
+    const eventTotalVacanciesAmount = event.vacancies;
+    const availableEventVacancies = eventTotalVacanciesAmount - eventReservedVancanciesAmount[1];
+
+    if(availableEventVacancies === 0) {
+        throw new ConflictError('Oops! Parece que não há mais vagas disponíveis para este evento.');
+    }
+ 
     for (let i = 0; i < userEventsHours.length; i++) {
         if (
             +event.beginHour >= +userEventsHours[i].begin &&
