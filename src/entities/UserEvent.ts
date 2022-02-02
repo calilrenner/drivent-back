@@ -26,12 +26,6 @@ export default class UserEvent extends BaseEntity {
     @ManyToOne(() => Event, (event) => event.userEvents, { eager: true })
     event: Event;
 
-    static async findUserEvent(userId: number) {
-        const eventi = await this.find({ where: { userId } });
-
-        return eventi;
-    }
-
     static async createUserEvent(userEvent: EventsByUser) {
         const newUserEvent = this.create(userEvent);
         await newUserEvent.save();
@@ -47,5 +41,11 @@ export default class UserEvent extends BaseEntity {
         const events = await this.find({ where: { userId } });
 
         return events;
+    }
+
+    static async findEventsByEventId(eventId: number) {
+        const event = this.findAndCount({ where: { eventId } });
+
+        return event;
     }
 }

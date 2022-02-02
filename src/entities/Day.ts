@@ -26,4 +26,10 @@ export default class Day extends BaseEntity {
         );
         return orderedDayData;
     }
+
+    static async getDayName(dayId: number) {
+        const dayData = await this.find({ where: { id: dayId } });
+
+        return dayData[0].day;
+    }
 }
